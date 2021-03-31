@@ -2,7 +2,7 @@ package sadi;
 
 import java.util.ArrayList;
 
-public class Course implements StudentEnrolmentManager{
+public class Course {
     private String id;
     private String name;
     private int numberOfCredits;
@@ -31,28 +31,4 @@ public class Course implements StudentEnrolmentManager{
                 ;
     }
 
-    @Override
-    public void add() {
-
-    }
-
-    @Override
-    public void update() {
-
-    }
-
-    @Override
-    public void delete() {
-
-    }
-
-    @Override
-    public void getOne() {
-
-    }
-
-    @Override
-    public void getAll() {
-
-    }
 }
