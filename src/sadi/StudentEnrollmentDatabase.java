@@ -53,14 +53,32 @@ import java.util.List;
 
         }
 
-        @Override
-        public void getOne() {
+     @Override
+     public void getOne() {
 
-        }
+     }
+
+
+     public StudentEnrollment findEnrolment(String id) {
+         for (StudentEnrollment studentEnrollment : studentEnrollments) {
+             if (studentEnrollment.getStudentID().equals(id)) {
+                 return studentEnrollment;
+             }
+         }
+         System.out.println("Lead ID does not exist");
+         return null;
+     }
+
 
         @Override
         public void getAll() {
+            System.out.println("ENROLLMENT LIST");
+            System.out.println("*****************************");
+            for (StudentEnrollment studentEnrollment: studentEnrollments) {
+                System.out.println(studentEnrollment);
 
+            }
+            System.out.println("*****************************");
         }
 
      @Override
@@ -68,16 +86,19 @@ import java.util.List;
          studentEnrollments.clear();
          // Opens the file for reading
          try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+             String line1 = null;
              String enrollmentInfo;
              // Reads it line by line
-             while ((enrollmentInfo = br.readLine()) != null) {
-                 // splits the string line using semicolons
-                 String[] values = enrollmentInfo.split(",");
-                 String studentID = values[0];
-                 String courseID = values[1];
-                 String semester = values[2];
-                 // adds a new lead with those values
-                 add(studentID, courseID, semester);
+             while ((line1 = br.readLine()) != null) {
+                 while ((enrollmentInfo = br.readLine()) != null) {
+                     // splits the string line using semicolons
+                     String[] values = enrollmentInfo.split(",");
+                     String studentID = values[0];
+                     String courseID = values[1];
+                     String semester = values[2];
+                     // adds a new lead with those values
+                     add(studentID, courseID, semester);
+                 }
              }
          }
      }

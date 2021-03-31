@@ -27,7 +27,6 @@ import java.util.Scanner;
             do {
                 Ultility.clearscr();
                 System.out.println("STUDENT ENROLMENT MANAGER");
-                System.out.println("");
                 System.out.println("*****************************");
                 System.out.println("1. Add");
                 System.out.println("2. Update");
@@ -49,6 +48,7 @@ import java.util.Scanner;
 
                 if (choice == 3) {
                     StudentEnrollment.printEnrollment();
+                    choice = 0;
                 }
 
 
