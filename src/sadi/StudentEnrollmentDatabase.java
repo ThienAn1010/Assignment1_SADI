@@ -72,13 +72,9 @@ import java.util.List;
 
         @Override
         public void getAll() {
-            System.out.println("ENROLLMENT LIST");
-            System.out.println("*****************************");
             for (StudentEnrollment studentEnrollment: studentEnrollments) {
                 System.out.println(studentEnrollment);
-
             }
-            System.out.println("*****************************");
         }
 
      @Override

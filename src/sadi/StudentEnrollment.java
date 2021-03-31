@@ -94,7 +94,10 @@ public class StudentEnrollment {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                System.out.println("ENROLLMENT LIST");
+                System.out.println("*****************************");
                 studentEnrollmentDatabase.getAll();
+                System.out.println("*****************************");
                 System.out.println("Press \"Enter\" to return");
                 sc.nextLine();
 
