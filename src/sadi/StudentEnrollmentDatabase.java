@@ -3,10 +3,12 @@ package sadi;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
- public class StudentEnrollmentDatabase implements StudentEnrolmentManager {
+public class StudentEnrollmentDatabase implements StudentEnrolmentManager {
         List<StudentEnrollment> studentEnrollments;
         private final String file;
+    static Scanner sc = new Scanner(System.in);
 
      public StudentEnrollmentDatabase(String file) {
          this.studentEnrollments = new ArrayList<>();
@@ -43,6 +45,8 @@ import java.util.List;
      }
 
 
+
+
      @Override
         public void update() {
 
@@ -53,21 +57,57 @@ import java.util.List;
 
         }
 
+
      @Override
-     public void getOne() {
+     public void getOne(String type, String id) {
+        if (type.equalsIgnoreCase("student")) {
 
-     }
-
-
-     public StudentEnrollment findEnrolment(String id) {
-         for (StudentEnrollment studentEnrollment : studentEnrollments) {
-             if (studentEnrollment.getStudentID().equals(id)) {
-                 return studentEnrollment;
+            for (StudentEnrollment studentEnrollment : studentEnrollments) {
+                if (studentEnrollment.getStudentID().equals(id)) {
+                    System.out.println(studentEnrollment);
+                }
+            }
+            System.out.println("*****************************");
+            System.out.println("Press \"Enter\" to return");
+            sc.nextLine();
+        }
+         if (type.equalsIgnoreCase("course")) {
+             for (StudentEnrollment studentEnrollment : studentEnrollments) {
+                 if (studentEnrollment.getCourseID().equals(id)) {
+                     System.out.println(studentEnrollment);
+                 }
              }
+             System.out.println("*****************************");
+             System.out.println("Press \"Enter\" to return");
+             sc.nextLine();
          }
-         System.out.println("Lead ID does not exist");
-         return null;
+         if (type.equalsIgnoreCase("semester")) {
+             for (StudentEnrollment studentEnrollment : studentEnrollments) {
+                 if (studentEnrollment.getSemester().equals(id)) {
+                     System.out.println(studentEnrollment);
+                 }
+             }
+             System.out.println("*****************************");
+             System.out.println("Press \"Enter\" to return");
+             sc.nextLine();
+         }
+
+
      }
+
+
+        public boolean validate(String type, String input) {
+         if (type.equals("student")) {
+             return studentEnrollments.contains(input);
+         }
+         if (type.equals("course")) {
+             return studentEnrollments.contains(input);
+         }
+         if (type.equals("semester")) {
+             return studentEnrollments.contains(input);
+         }
+         return false;
+        }
 
 
         @Override
