@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface StudentEnrolmentManager {
     public void add(String studentID, String courseID, String semester) throws IOException;
-    public void update();
+    public void update(String type, StudentEnrollment updateStudent, String newUpdate);
     public void delete();
     public void getAll();
     public void load() throws IOException;

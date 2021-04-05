@@ -48,8 +48,19 @@ public class StudentEnrollmentDatabase implements StudentEnrolmentManager {
 
 
      @Override
-        public void update() {
-
+        public void update(String type, StudentEnrollment updateStudent, String newUpdate) {
+            if (type.equals("sid")) {
+                updateStudent.setStudentID(newUpdate);
+                System.out.println(updateStudent);
+            }
+         if (type.equals("cid")) {
+             updateStudent.setCourseID(newUpdate);
+             System.out.println(updateStudent);
+         }
+         if (type.equals("sem")) {
+             updateStudent.setSemester(newUpdate);
+             System.out.println(updateStudent);
+         }
         }
 
         @Override
@@ -61,7 +72,6 @@ public class StudentEnrollmentDatabase implements StudentEnrolmentManager {
      @Override
      public void getOne(String type, String id) {
         if (type.equalsIgnoreCase("student")) {
-
             for (StudentEnrollment studentEnrollment : studentEnrollments) {
                 if (studentEnrollment.getStudentID().equals(id)) {
                     System.out.println(studentEnrollment);
@@ -96,18 +106,15 @@ public class StudentEnrollmentDatabase implements StudentEnrolmentManager {
      }
 
 
-        public boolean validate(String type, String input) {
-         if (type.equals("student")) {
-             return studentEnrollments.contains(input);
-         }
-         if (type.equals("course")) {
-             return studentEnrollments.contains(input);
-         }
-         if (type.equals("semester")) {
-             return studentEnrollments.contains(input);
-         }
-         return false;
+
+    public StudentEnrollment detailEnrollment(String studentID, String courseID) {
+        for (StudentEnrollment studentEnrollment : studentEnrollments) {
+            if ((studentEnrollment.getStudentID().equals(studentID)) && (studentEnrollment.getCourseID().equals(courseID))) {
+                return studentEnrollment;
+            }
         }
+        return null;
+    }
 
 
         @Override
@@ -122,10 +129,9 @@ public class StudentEnrollmentDatabase implements StudentEnrolmentManager {
          studentEnrollments.clear();
          // Opens the file for reading
          try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-             String line1 = null;
              String enrollmentInfo;
              // Reads it line by line
-             while ((line1 = br.readLine()) != null) {
+
                  while ((enrollmentInfo = br.readLine()) != null) {
                      // splits the string line using semicolons
                      String[] values = enrollmentInfo.split(",");
@@ -135,7 +141,7 @@ public class StudentEnrollmentDatabase implements StudentEnrolmentManager {
                      // adds a new lead with those values
                      add(studentID, courseID, semester);
                  }
-             }
+
          }
      }
  }

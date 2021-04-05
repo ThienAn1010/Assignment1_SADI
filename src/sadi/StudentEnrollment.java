@@ -28,6 +28,17 @@ public class StudentEnrollment {
         return semester;
     }
 
+    public void setStudentID(String studentID) {
+        this.studentID = studentID;
+    }
+
+    public void setCourseID(String courseID) {
+        this.courseID = courseID;
+    }
+
+    public void setSemester(String semester) {
+        this.semester = semester;
+    }
 
     public static void enrollStudent() throws IOException {
         String newStudentID;
@@ -58,8 +69,103 @@ public class StudentEnrollment {
     }
 
     public static void updateEnrollment(){
-        System.out.println("test");
-        sc.nextLine();
+        String choice2;
+        String updateSID;
+        String updateCID;
+        int choice3;
+        String newUpdate;
+        Ultility.clearscr();
+        System.out.println("*****************************");
+        System.out.println("UPDATE ENROLLMENT");
+        System.out.print("Please enter the student ID that you want to update: ");
+        updateSID = sc.nextLine();
+        System.out.print("Please enter the course ID that you want to update: ");
+        updateCID = sc.nextLine();
+
+        try {
+            studentEnrollmentDatabase.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("*****************************");
+
+        StudentEnrollment updateStudent = studentEnrollmentDatabase.detailEnrollment(updateSID,updateCID);
+        if (updateStudent != null) {
+            System.out.println("Enrolment Information");
+            System.out.println(updateStudent);
+            System.out.println("Continue to update? Y/N");
+            choice2 = sc.nextLine();
+            if (choice2.equalsIgnoreCase("Y")) {
+                do {
+                    Ultility.clearscr();
+                    System.out.println("*****************************");
+                    System.out.println("Please choose what you want to update:");
+                    System.out.println("1. Student ID");
+                    System.out.println("2. Course ID");
+                    System.out.println("3. Semester");
+                    System.out.println("4. Return");
+                    System.out.println("*****************************");
+                    System.out.print("Please choose a command to execute: ");
+                    choice3 = sc.nextInt();
+
+                    if (choice3 == 1) {
+                        Ultility.clearscr();
+                        sc.nextLine();
+                        System.out.println("*****************************");
+                        System.out.println("Student ID update");
+                        System.out.print("Please enter a new student ID: ");
+                        newUpdate = sc.nextLine();
+                        studentEnrollmentDatabase.update("sid",updateStudent,newUpdate);
+                        try {
+                            studentEnrollmentDatabase.save();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        System.out.println("Press \"Enter\" to exit");
+                    }
+
+                    if (choice3 == 2) {
+                        Ultility.clearscr();
+                        sc.nextLine();
+                        System.out.println("*****************************");
+                        System.out.println("Course ID update");
+                        System.out.print("Please enter a new course ID: ");
+                        newUpdate = sc.nextLine();
+                        studentEnrollmentDatabase.update("cid",updateStudent,newUpdate);
+                        try {
+                            studentEnrollmentDatabase.save();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        System.out.println("Press \"Enter\" to exit");
+                    }
+
+                    if (choice3 == 3) {
+                        Ultility.clearscr();
+                        sc.nextLine();
+                        System.out.println("*****************************");
+                        System.out.println("Semester update");
+                        System.out.print("Please enter a new semester: ");
+                        newUpdate = sc.nextLine();
+                        studentEnrollmentDatabase.update("sem",updateStudent,newUpdate);
+                        try {
+                            studentEnrollmentDatabase.save();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        System.out.println("Press \"Enter\" to exit");
+                    }
+                    sc.nextLine();
+                } while (choice3 != 4);
+            } else if ((choice2.equalsIgnoreCase("N"))) {
+                System.out.println("Press \"Enter\" to return");
+                sc.nextLine();
+            }
+        } else {
+            System.out.println("There is no enrollment matches your input!");
+            System.out.println("Press \"Enter\" to return");
+            sc.nextLine();
+        }
     }
 
     public static void printEnrollment() {
@@ -114,6 +220,7 @@ public class StudentEnrollment {
                         System.out.println("*****************************");
                         System.out.print("Please enter the student ID: ");
                         String studentIdInput = sc.nextLine();
+
                         studentEnrollmentDatabase.getOne("student",studentIdInput);
                         choice2 = 0;
                     }
