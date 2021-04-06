@@ -9,12 +9,15 @@ public class StudentEnrollment {
     private String courseID;
     private String semester;
     static Scanner sc = new Scanner(System.in);
+    static Validator validator = new Validator();
 
     public StudentEnrollment(String studentID, String courseID, String semester) throws IOException {
         this.studentID = studentID;
         this.courseID = courseID;
         this.semester = semester;
     }
+
+
 
     public String getStudentID() {
         return studentID;
@@ -49,15 +52,12 @@ public class StudentEnrollment {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Ultility.clearscr();
+        Validator.clearscr();
         System.out.println("*****************************");
         System.out.println("NEW ENROLLMENT");
-        System.out.print("Please enter the student ID: ");
-        newStudentID = sc.nextLine();
-        System.out.print("Please enter the course ID: ");
-        newCourse = sc.nextLine();
-        System.out.print("Please enter the semester: ");
-        newSemester = sc.nextLine();
+        newStudentID = validator.setSid();
+        newCourse = validator.setCid();
+        newSemester = validator.setSem();
         studentEnrollmentDatabase.add(newStudentID,newCourse,newSemester);
         try {
             studentEnrollmentDatabase.save();
@@ -74,7 +74,7 @@ public class StudentEnrollment {
         String updateCID;
         int choice3;
         String newUpdate;
-        Ultility.clearscr();
+        Validator.clearscr();
         System.out.println("*****************************");
         System.out.println("UPDATE ENROLLMENT");
         System.out.print("Please enter the student ID that you want to update: ");
@@ -97,7 +97,7 @@ public class StudentEnrollment {
             choice2 = sc.nextLine();
             if (choice2.equalsIgnoreCase("Y")) {
                 do {
-                    Ultility.clearscr();
+                    Validator.clearscr();
                     System.out.println("*****************************");
                     System.out.println("Please choose what you want to update:");
                     System.out.println("1. Student ID");
@@ -109,7 +109,7 @@ public class StudentEnrollment {
                     choice3 = sc.nextInt();
 
                     if (choice3 == 1) {
-                        Ultility.clearscr();
+                        Validator.clearscr();
                         sc.nextLine();
                         System.out.println("*****************************");
                         System.out.println("Student ID update");
@@ -125,7 +125,7 @@ public class StudentEnrollment {
                     }
 
                     if (choice3 == 2) {
-                        Ultility.clearscr();
+                        Validator.clearscr();
                         sc.nextLine();
                         System.out.println("*****************************");
                         System.out.println("Course ID update");
@@ -141,7 +141,7 @@ public class StudentEnrollment {
                     }
 
                     if (choice3 == 3) {
-                        Ultility.clearscr();
+                        Validator.clearscr();
                         sc.nextLine();
                         System.out.println("*****************************");
                         System.out.println("Semester update");
@@ -171,7 +171,7 @@ public class StudentEnrollment {
     public static void printEnrollment() {
         int choice;
         do {
-            Ultility.clearscr();
+            Validator.clearscr();
             try {
                 studentEnrollmentDatabase.load();
             } catch (IOException e) {
@@ -187,7 +187,7 @@ public class StudentEnrollment {
             choice = sc.nextInt();
 
             if (choice == 1) {
-                Ultility.clearscr();
+                Validator.clearscr();
                 sc.nextLine();
                 System.out.println("ENROLLMENT LIST");
                 System.out.println("*****************************");
@@ -201,7 +201,7 @@ public class StudentEnrollment {
             if (choice == 2) {
                 int choice2;
                 do {
-                    Ultility.clearscr();
+                    Validator.clearscr();
 //                    sc.nextLine();
                     System.out.println("*****************************");
                     System.out.println("Please choose what you want to print");
@@ -215,7 +215,7 @@ public class StudentEnrollment {
 
 
                     if (choice2 == 1) {
-                        Ultility.clearscr();
+                        Validator.clearscr();
                         sc.nextLine();
                         System.out.println("*****************************");
                         System.out.print("Please enter the student ID: ");
@@ -225,7 +225,7 @@ public class StudentEnrollment {
                         choice2 = 0;
                     }
                     if (choice2 == 2) {
-                        Ultility.clearscr();
+                        Validator.clearscr();
                         sc.nextLine();
                         System.out.println("*****************************");
                         System.out.print("Please enter the course ID: ");
@@ -235,7 +235,7 @@ public class StudentEnrollment {
 
                     }
                     if (choice2 == 3) {
-                        Ultility.clearscr();
+                        Validator.clearscr();
                         sc.nextLine();
                         System.out.println("*****************************");
                         System.out.print("Please enter the semester: ");
