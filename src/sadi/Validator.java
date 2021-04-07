@@ -58,9 +58,15 @@ public class Validator {
         System.out.print("Please enter the student ID: ");
         String sid = sc.nextLine();
         sid = sid.trim().toLowerCase();
+        if (sid.equals("0")) {
+            return sid;
+        }
         while(!validate("sid", sid) ) {
             System.out.print("Please enter the correct student ID: ");
             sid = sc.nextLine();
+            if (sid.equals("0")) {
+                return sid;
+            }
         }
         return sid;
     }
@@ -69,9 +75,15 @@ public class Validator {
         System.out.print("Please enter the course ID: ");
         String cid = sc.nextLine();
         cid = cid.trim().toUpperCase();
+        if (cid.equals("0")) {
+            return cid;
+        }
         while(!validate("cid", cid) ) {
             System.out.print("Please enter the correct course ID: ");
             cid = sc.nextLine();
+            if (cid.equals("0")) {
+                return cid;
+            }
         }
         return cid;
     }
@@ -80,27 +92,55 @@ public class Validator {
         System.out.print("Please enter the semester: ");
         String sem = sc.nextLine();
         sem = sem.trim().toUpperCase();
+        if (sem.equals("0")) {
+            return sem;
+        }
         while(!validate("sem", sem) ) {
             System.out.print("Please enter the correct semester format: ");
             sem = sc.nextLine();
+            if (sem.equals("0")) {
+                return sem;
+            }
         }
         return sem;
     }
     
-//    public int choiceValidator() {
-//        try {
-//            System.out.print("choose a command to execute: ");
-//            int firstChoice = sc.nextInt();
-//            while (firstChoice != 1 && firstChoice != 2 && firstChoice != 3 && firstChoice != 4) {
-//                System.out.print("Please enter the correct option number: ");
-//                firstChoice = sc.nextInt();
-//            }
-//            return firstChoice;
-//        } catch (InputMismatchException e) {
-//            System.err.println("Wrong input! Input only integer numbers please...");
-//            sc.nextLine();
-//        }
-//    }
+    public int choiceValidator() {
+        int firstChoice =0;
+        try {
+            System.out.print("choose a command to execute: ");
+            firstChoice = sc.nextInt();
+            while (firstChoice != 1 && firstChoice != 2 && firstChoice != 3 && firstChoice != 4) {
+                System.out.println("UNKNOWN INPUT!");
+                System.out.print("Please enter the correct option number: ");
+                firstChoice = sc.nextInt();
+            }
+        } catch (InputMismatchException e) {
+            System.err.println("Wrong input! Input only integer number please...");
+            System.err.println("Press \"Enter\" to restart!");
+            sc.nextLine();
+            sc.nextLine();
+        }
+        return firstChoice;
+    }
+
+    public String setSid2() {
+        sc.nextLine();
+        System.out.print("Please enter the student ID: ");
+        String sid = sc.nextLine();
+        sid = sid.trim().toLowerCase();
+        if (sid.equals("0")) {
+            return sid;
+        }
+        while(!validate("sid", sid) ) {
+            System.out.print("Please enter the correct student ID: ");
+            sid = sc.nextLine();
+            if (sid.equals("0")) {
+                return sid;
+            }
+        }
+        return sid;
+    }
 
 
 

@@ -77,9 +77,6 @@ public class StudentEnrollmentDatabase implements StudentEnrolmentManager {
                     System.out.println(studentEnrollment);
                 }
             }
-            System.out.println("*****************************");
-            System.out.println("Press \"Enter\" to return");
-            sc.nextLine();
         }
          if (type.equalsIgnoreCase("course")) {
              for (StudentEnrollment studentEnrollment : studentEnrollments) {
@@ -107,12 +104,24 @@ public class StudentEnrollmentDatabase implements StudentEnrolmentManager {
 
 
 
-    public StudentEnrollment detailEnrollment(String studentID, String courseID) {
-        for (StudentEnrollment studentEnrollment : studentEnrollments) {
-            if ((studentEnrollment.getStudentID().equals(studentID)) && (studentEnrollment.getCourseID().equals(courseID))) {
-                return studentEnrollment;
+    public StudentEnrollment detailEnrollment(String type, String studentID, String selectedID) {
+         if (type.equals("student")) {
+            for (StudentEnrollment studentEnrollment : studentEnrollments) {
+                if ((studentEnrollment.getStudentID().equals(studentID)) && (studentEnrollment.getCourseID().equals(selectedID))) {
+                    return studentEnrollment;
+                }
             }
         }
+        if (type.equals("sem")) {
+            for (StudentEnrollment studentEnrollment : studentEnrollments) {
+                if ((studentEnrollment.getStudentID().equals(studentID)) && (studentEnrollment.getSemester().equals(selectedID))) {
+                    System.out.println(studentEnrollment.getSemester());
+                    return studentEnrollment;
+                }
+            }
+        }
+
+
         return null;
     }
 
@@ -131,7 +140,6 @@ public class StudentEnrollmentDatabase implements StudentEnrolmentManager {
          try (BufferedReader br = new BufferedReader(new FileReader(file))) {
              String enrollmentInfo;
              // Reads it line by line
-
                  while ((enrollmentInfo = br.readLine()) != null) {
                      // splits the string line using semicolons
                      String[] values = enrollmentInfo.split(",");
