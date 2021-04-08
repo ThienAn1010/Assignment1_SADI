@@ -1,6 +1,7 @@
 package sadi;
 
 import java.io.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -17,8 +18,8 @@ public class StudentEnrollmentDatabase implements StudentEnrolmentManager {
 
 
      @Override
-     public void add(String studentID, String courseID, String semester) throws IOException {
-         StudentEnrollment newSE = new StudentEnrollment(studentID, courseID, semester);
+     public void add(String studentID, String studentName, String birthDate, String courseID, String courseName, int creditPoint, String semester) {
+         StudentEnrollment newSE = new StudentEnrollment(studentID, studentName, birthDate, courseID, courseName, creditPoint, semester);
          studentEnrollments.add(newSE);
      }
 
@@ -64,8 +65,10 @@ public class StudentEnrollmentDatabase implements StudentEnrolmentManager {
         }
 
         @Override
-        public void delete() {
-
+        public void delete(String type, StudentEnrollment updateStudent ) {
+            if (type.equals("update")) {
+                studentEnrollments.remove(updateStudent);
+            }
         }
 
 
@@ -114,8 +117,7 @@ public class StudentEnrollmentDatabase implements StudentEnrolmentManager {
         }
         if (type.equals("sem")) {
             for (StudentEnrollment studentEnrollment : studentEnrollments) {
-                if ((studentEnrollment.getStudentID().equals(studentID)) && (studentEnrollment.getSemester().equals(selectedID))) {
-                    System.out.println(studentEnrollment.getSemester());
+                if ((studentEnrollment.getStudentID().equalsIgnoreCase(studentID)) && (studentEnrollment.getSemester().equalsIgnoreCase(selectedID))) {
                     return studentEnrollment;
                 }
             }
@@ -144,10 +146,14 @@ public class StudentEnrollmentDatabase implements StudentEnrolmentManager {
                      // splits the string line using semicolons
                      String[] values = enrollmentInfo.split(",");
                      String studentID = values[0];
-                     String courseID = values[1];
-                     String semester = values[2];
+                     String studentName = values[1];
+                     String birthdate = values[2];
+                     String courseID = values[3];
+                     String courseName = values[4];
+                     String creditPoint = values[5];
+                     String semester = values[6];
                      // adds a new lead with those values
-                     add(studentID, courseID, semester);
+                     add(studentID, studentName, birthdate, courseID, courseName, Integer.parseInt(String.valueOf(creditPoint)), semester);
                  }
 
          }

@@ -1,22 +1,35 @@
 package sadi;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Scanner;
 
 public class StudentEnrollment {
-    static StudentEnrollmentDatabase studentEnrollmentDatabase = new StudentEnrollmentDatabase("Student enrollments.csv");
+    static StudentEnrollmentDatabase studentEnrollmentDatabase = new StudentEnrollmentDatabase("default.csv");
+    private static Student student;
+    private static Course course;
+    private static Student studentInfo;
+    private static Course courseInfo;
     private String studentID;
     private String courseID;
     private String semester;
+    private String studentName;
+    private String courseName;
+    private String birthdate;
+    private int numberOfCredits;
     static Scanner sc = new Scanner(System.in);
     static Validator validator = new Validator();
-
-    public StudentEnrollment(String studentID, String courseID, String semester) throws IOException {
+    //////////////////////////////////////////////////////////////////////////////////
+    public StudentEnrollment(String studentID,String studentName, String birthdate, String courseID, String courseName, int numberOfCredits, String semester ) {
         this.studentID = studentID;
         this.courseID = courseID;
         this.semester = semester;
+        this.studentName = studentName;
+        this.courseName = courseName;
+        this.birthdate = birthdate;
+        this.numberOfCredits = numberOfCredits;
     }
-
     public String getStudentID() {
         return studentID;
     }
@@ -40,8 +53,12 @@ public class StudentEnrollment {
     public void setSemester(String semester) {
         this.semester = semester;
     }
-
-    public static void enrollStudent() throws IOException {
+    //////////////////////////////////////////////////////////////////////////////////
+    public static void enrollStudent() {
+        student = new Student();
+        course = new Course();
+        List<Course> courses = course.getCourses();
+        List<Student> students = student.getStudents();
         try {
             studentEnrollmentDatabase.load();
         } catch (IOException e) {
@@ -63,7 +80,22 @@ public class StudentEnrollment {
         if (newSemester.equals("0")) {
             return;
         }
-        studentEnrollmentDatabase.add(newStudentID,newCourse,newSemester);
+        students.forEach(e -> {
+            if (e.getId().equalsIgnoreCase(newStudentID)) {
+                 studentInfo = e;
+            }
+        });
+        courses.forEach(e -> {
+            if (e.getId().equalsIgnoreCase(newCourse)) {
+                courseInfo = e;
+            }
+        });
+        String studentName = studentInfo.getName();
+        String studentBirthdate = studentInfo.getBirthdate();
+        String courseName = courseInfo.getName();
+        int coursePoint = courseInfo.getNumberOfCredits();
+
+        studentEnrollmentDatabase.add(newStudentID, studentName, studentBirthdate,newCourse, courseName, coursePoint, newSemester);
         try {
             studentEnrollmentDatabase.save();
         } catch (IOException e) {
@@ -73,12 +105,12 @@ public class StudentEnrollment {
         sc.nextLine();
     }
 
-    public static void updateEnrollment(){
+    public static void updateEnrollment() {
         int choice1;
         String choice2;
+        int choice3;
         String updateSID;
         String updateCID;
-        int choice3;
         String newUpdate;
 
         do {
@@ -104,7 +136,7 @@ public class StudentEnrollment {
                     e.printStackTrace();
                 }
                 System.out.println("*****************************");
-                StudentEnrollment updateStudent = studentEnrollmentDatabase.detailEnrollment("student",updateSID, updateCID);
+                StudentEnrollment updateStudent = studentEnrollmentDatabase.detailEnrollment("student", updateSID, updateCID);
                 if (updateStudent != null) {
                     System.out.println("Enrolment Information");
                     System.out.println(updateStudent);
@@ -197,59 +229,90 @@ public class StudentEnrollment {
                 if (semInput.equals("0")) {
                     return;
                 }
-                System.out.println(newStudentID);
-                System.out.println(semInput);
-                StudentEnrollment updateStudent = studentEnrollmentDatabase.detailEnrollment("sem",newStudentID,semInput);
-//                if (updateStudent != null) {
-//                    System.out.println("*****************************");
-//                    System.out.println("Enrolment Information");
-//                    System.out.println(updateStudent);
-//                    System.out.println("Continue to update? Y/N");
-//                    choice2 = sc.nextLine();
-//                    if (choice2.equalsIgnoreCase("Y")) {
-//                    System.out.println("Select your action");
-//                    System.out.println("1.Add");
-//                    System.out.println("2.Delete");
-//                    System.out.print("choose a command to execute: ");
-//                    int choice4 = sc.nextInt();
-//                    } else if ((choice2.equalsIgnoreCase("N"))) {
-//                        System.out.println("Press \"Enter\" to return");
-//                        sc.nextLine();
-//                    }
-//                } else {
-//                    System.err.println("There is no enrollment matches your input!");
-//                    System.err.println("Press \"Enter\" to return");
-//                    sc.nextLine();                }
+                try {
+                    studentEnrollmentDatabase.load();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                StudentEnrollment updateStudent = studentEnrollmentDatabase.detailEnrollment("sem", newStudentID, semInput);
+                if (updateStudent != null) {
+                    System.out.println("*****************************");
+                    System.out.println("Enrolment Information");
+                    System.out.println(updateStudent);
+                    System.out.println("*****************************");
+                    System.out.println("Continue to update? Y/N");
+                    choice2 = sc.nextLine();
 
-//
-//                if (choice4 == 1) {
-//                    System.out.println("*****************************");
-//                    System.out.println("ADD COURSE");
-//                    System.out.println("Please enter the new course ID:");
-//                    String newCourse = validator.setCid();
-//                    if (newCourse.equals("0")) {
-//                        return;
-//                    }
-//                }
+                    if (choice2.equalsIgnoreCase("Y")) {
+                        Validator.clearscr();
+                        System.out.println("Select your action");
+                        System.out.println("1.Add");
+                        System.out.println("2.Delete");
+                        System.out.print("choose a command to execute: ");
+                        int choice4 = sc.nextInt();
+
+                        if (choice4 == 1) {
+                            System.out.println("*****************************");
+                            System.out.println("ADD COURSE");
+                            String newCourse = validator.setCid();
+                            if (newCourse.equals("0")) {
+                                return;
+                            }
+                            studentEnrollmentDatabase.update("cid", updateStudent, newCourse);
+                            try {
+                                studentEnrollmentDatabase.save();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            sc.nextLine();
+                            System.out.println("The enrollment has been updated!");
+                            System.out.println("Press \"Enter\" to exit");
+                            sc.nextLine();
+                        }
+
+                        if (choice4 == 2) {
+                            System.out.println("*****************************");
+                            System.out.println("DELETE COURSE");
+                            String newCourse = validator.setCid();
+                            if (newCourse.equals("0")) {
+                                return;
+                            }
+                            studentEnrollmentDatabase.delete("update", updateStudent);
+                            try {
+                                studentEnrollmentDatabase.save();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            sc.nextLine();
+                            System.out.println("The enrollment has been removed!");
+                            System.out.println("Press \"Enter\" to exit");
+                            sc.nextLine();
+                        }
 
 
-
-
+                    } else if ((choice2.equalsIgnoreCase("N"))) {
+                        System.out.println("Press \"Enter\" to return");
+                        sc.nextLine();
+                    }
+                } else {
+                    System.err.println("There is no enrollment matches your input!");
+                    System.err.println("Press \"Enter\" to return");
+                    sc.nextLine();
+                }
                 choice1 = 0;
-
             }
 
 
-
-        }while (choice1 != 3);
-
-
-
-
-
-
-
+        } while (choice1 != 3);
     }
+
+
+
+
+
+
+
+
 
     public static void printEnrollment() {
         int choice;
