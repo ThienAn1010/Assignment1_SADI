@@ -1,27 +1,24 @@
 package sadi;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
 public class StudentEnrollment {
     static StudentEnrollmentDatabase studentEnrollmentDatabase = new StudentEnrollmentDatabase("default.csv");
-    private static Student student;
-    private static Course course;
     private static Student studentInfo;
     private static Course courseInfo;
     private String studentID;
     private String courseID;
     private String semester;
-    private String studentName;
-    private String courseName;
-    private String birthdate;
-    private int numberOfCredits;
+    private final String studentName;
+    private final String courseName;
+    private final String birthdate;
+    private final int numberOfCredits;
     static Scanner sc = new Scanner(System.in);
     static Validator validator = new Validator();
     //////////////////////////////////////////////////////////////////////////////////
-    public StudentEnrollment(String studentID,String studentName, String birthdate, String courseID, String courseName, int numberOfCredits, String semester ) {
+    public StudentEnrollment(String studentID, String studentName, String birthdate, String courseID, String courseName, int numberOfCredits, String semester) {
         this.studentID = studentID;
         this.courseID = courseID;
         this.semester = semester;
@@ -30,6 +27,7 @@ public class StudentEnrollment {
         this.birthdate = birthdate;
         this.numberOfCredits = numberOfCredits;
     }
+
     public String getStudentID() {
         return studentID;
     }
@@ -42,6 +40,14 @@ public class StudentEnrollment {
         return semester;
     }
 
+    public String getStudentName() { return studentName; }
+
+    public String getCourseName() { return courseName; }
+
+    public String getBirthdate() { return birthdate; }
+
+    public int getNumberOfCredits() { return numberOfCredits; }
+
     public void setStudentID(String studentID) {
         this.studentID = studentID;
     }
@@ -53,10 +59,11 @@ public class StudentEnrollment {
     public void setSemester(String semester) {
         this.semester = semester;
     }
+
     //////////////////////////////////////////////////////////////////////////////////
     public static void enrollStudent() {
-        student = new Student();
-        course = new Course();
+        Student student = new Student();
+        Course course = new Course();
         List<Course> courses = course.getCourses();
         List<Student> students = student.getStudents();
         try {
@@ -82,7 +89,7 @@ public class StudentEnrollment {
         }
         students.forEach(e -> {
             if (e.getId().equalsIgnoreCase(newStudentID)) {
-                 studentInfo = e;
+                studentInfo = e;
             }
         });
         courses.forEach(e -> {
@@ -95,7 +102,7 @@ public class StudentEnrollment {
         String courseName = courseInfo.getName();
         int coursePoint = courseInfo.getNumberOfCredits();
 
-        studentEnrollmentDatabase.add(newStudentID, studentName, studentBirthdate,newCourse, courseName, coursePoint, newSemester);
+        studentEnrollmentDatabase.add(newStudentID, studentName, studentBirthdate, newCourse, courseName, coursePoint, newSemester);
         try {
             studentEnrollmentDatabase.save();
         } catch (IOException e) {
@@ -104,7 +111,7 @@ public class StudentEnrollment {
         System.out.println("Press \"Enter\" to exit");
         sc.nextLine();
     }
-
+    //////////////////////////////////////////////////////////////////////////////////
     public static void updateEnrollment() {
         int choice1;
         String choice2;
@@ -305,15 +312,7 @@ public class StudentEnrollment {
 
         } while (choice1 != 3);
     }
-
-
-
-
-
-
-
-
-
+    //////////////////////////////////////////////////////////////////////////////////
     public static void printEnrollment() {
         int choice;
         do {
@@ -351,48 +350,65 @@ public class StudentEnrollment {
 //                    sc.nextLine();
                     System.out.println("*****************************");
                     System.out.println("Please choose what you want to print");
+                    System.out.println("1. One enrollment of one student");
                     System.out.println("1. One student's enrollment list");
                     System.out.println("2. One course's enrollment list");
                     System.out.println("3. All courses in one semester");
-                    System.out.println("4. Return");
+                    System.out.println("5. Return");
                     System.out.println("*****************************");
                     System.out.print("Please choose a command to execute: ");
                     choice2 = sc.nextInt();
 
-
                     if (choice2 == 1) {
+                        Validator.clearscr();
+                        String studentId = validator.setSid();
+                        if (studentId.equals("0")) {
+                            return;
+                        }
+                        String courseInput = validator.setCid();
+                        if (courseInput.equals("0")) {
+                            return;
+                        }
+                        String semesterInput = validator.setSem();
+                        if (semesterInput.equals("0")) {
+                            return;
+                        }
+                        studentEnrollmentDatabase.getOne(studentId,courseInput,semesterInput);
+                    }
+
+                    if (choice2 == 2) {
                         Validator.clearscr();
                         sc.nextLine();
                         System.out.println("*****************************");
                         System.out.print("Please enter the student ID: ");
                         String studentIdInput = sc.nextLine();
-                        studentEnrollmentDatabase.getOne("student",studentIdInput);
+                        studentEnrollmentDatabase.getStudentEnrollment(studentIdInput);
                         System.out.println("*****************************");
                         System.out.println("Press \"Enter\" to return");
                         sc.nextLine();
                         choice2 = 0;
                     }
-                    if (choice2 == 2) {
+                    if (choice2 == 3) {
                         Validator.clearscr();
                         sc.nextLine();
                         System.out.println("*****************************");
                         System.out.print("Please enter the course ID: ");
                         String courseIdInput = sc.nextLine();
-                        studentEnrollmentDatabase.getOne("course",courseIdInput);
+                        studentEnrollmentDatabase.getCourseEnrollment(courseIdInput);
                         choice2 = 0;
 
                     }
-                    if (choice2 == 3) {
+                    if (choice2 == 4) {
                         Validator.clearscr();
                         sc.nextLine();
                         System.out.println("*****************************");
                         System.out.print("Please enter the semester: ");
                         String semesterInput = sc.nextLine();
-                        studentEnrollmentDatabase.getOne("semester",semesterInput);
+                        studentEnrollmentDatabase.getCourseOffered(semesterInput);
                         choice2 = 0;
                     }
                     choice = 0;
-                } while (choice2 != 4);
+                } while (choice2 != 5);
                 System.out.println("Press \"Enter\" to return");
                 sc.nextLine();
             }
@@ -402,6 +418,21 @@ public class StudentEnrollment {
         sc.nextLine();
 
     }
+    //////////////////////////////////////////////////////////////////////////////////
+    public static void deleteEnrollment() {
+
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
 
 
 
@@ -417,10 +448,16 @@ public class StudentEnrollment {
     public String toString() {
         return
                 "StudentID: " + studentID + " " +
-                "| CourseID: " + courseID + " "   +
-                "| semester: " + semester
+                        "| Student name: " + studentName + " " +
+                        "| Birthdate: " + birthdate + " " +
+                        "| CourseID: " + courseID + " " +
+                        "| Course name: " + courseName + " " +
+                        "| Credit point: " + numberOfCredits + " " +
+                        "| semester: " + semester
+
                 ;
     }
+
 
 
 }

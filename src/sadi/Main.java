@@ -9,6 +9,9 @@ import java.util.Scanner;
             Scanner sc = new Scanner(System.in);
             Validator validator = new Validator();
             int choice;
+//            String fileName = validator.fileValidate();
+//            StudentEnrollmentDatabase studentEnrollmentDatabase = new StudentEnrollmentDatabase(fileName);
+
             do {
                 Validator.clearscr();
                 System.out.println("STUDENT ENROLMENT MANAGER");
@@ -16,11 +19,10 @@ import java.util.Scanner;
                 System.out.println("1. Add");
                 System.out.println("2. Update");
                 System.out.println("3. Print");
-                System.out.println("4. Exit");
+                System.out.println("4. Delete");
+                System.out.println("5. Exit");
                 System.out.println("*****************************");
                 choice = validator.choiceValidator();
-
-
                     if (choice == 1) {
                         StudentEnrollment.enrollStudent();
                         choice = 0;
@@ -36,7 +38,11 @@ import java.util.Scanner;
                         choice = 0;
                     }
 
-            } while (choice != 4) ;
+                    if (choice == 4) {
+                        StudentEnrollment.deleteEnrollment();
+                    }
+
+            } while (choice != 5) ;
             sc.close();
             System.out.println("Exiting...");
         }

@@ -11,5 +11,5 @@ public interface StudentEnrolmentManager {
     public void getAll();
     public void load() throws IOException;
     public void save() throws IOException;
-    public void getOne(String type, String id);
+    public void getOne(String studentId, String courseId, String semester);
 }

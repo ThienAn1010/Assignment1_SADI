@@ -14,11 +14,8 @@ public class Validator {
     private Student student;
     private Course course;
     Scanner sc = new Scanner(System.in);
-
-
-
+    //////////////////////////////////////////////////////////////////////////////////
     public boolean validate(String type, String input) {
-        //////////////////////////////////////////////////////////////////////////////////
         student = new Student();
         course = new Course();
         List<Course> courses = course.getCourses();
@@ -140,6 +137,27 @@ public class Validator {
             }
         }
         return sid;
+    }
+
+    public String fileValidate() {
+        String fileName = null;
+        String choice2;
+        System.out.println("*****************************");
+        System.out.println("Do you want to load a new CSV file? Y/N?");
+        choice2 = sc.nextLine();
+        choice2 = choice2.trim().toLowerCase();
+        while ((!choice2.equalsIgnoreCase("y")) && (!choice2.equalsIgnoreCase(("n")))) {
+            System.out.print("Please enter in the correct format: ");
+            choice2 = sc.nextLine();
+        }
+        if (choice2.equalsIgnoreCase("y")) {
+            System.out.print("Please enter the file path: ");
+            fileName = sc.nextLine();
+        }
+        if (choice2.equalsIgnoreCase("n")) {
+            fileName = "default.csv" ;
+        }
+        return fileName;
     }
 
 
