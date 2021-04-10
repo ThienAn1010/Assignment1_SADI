@@ -64,20 +64,19 @@ public class StudentEnrollmentDatabase implements StudentEnrolmentManager {
 
     //////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void delete(String type, StudentEnrollment updateStudent) {
-        if (type.equals("update")) {
+    public void delete(StudentEnrollment updateStudent) {
             studentEnrollments.remove(updateStudent);
-        }
     }
 
     //////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void getOne(String studentId, String courseId, String semester) {
-        studentEnrollments.forEach(e -> {
-            if (e.getStudentID().equalsIgnoreCase(studentId) && e.getCourseID().equalsIgnoreCase(courseId) && e.getSemester().equalsIgnoreCase(semester)) {
-                System.out.println(e);
-            }
-        });
+    public StudentEnrollment getOne(String studentId, String courseId, String semester) {
+    for (StudentEnrollment studentEnrollment : studentEnrollments) {
+        if (studentEnrollment.getStudentID().equalsIgnoreCase(studentId) && studentEnrollment.getCourseID().equalsIgnoreCase(courseId) && studentEnrollment.getSemester().equalsIgnoreCase(semester)) {
+            return studentEnrollment;
+        }
+    }
+    return null;
     }
 
     //////////////////////////////////////////////////////////////////////////////////
@@ -141,7 +140,7 @@ public class StudentEnrollmentDatabase implements StudentEnrolmentManager {
     //////////////////////////////////////////////////////////////////////////////////
     public void getCourseEnrollment(String id) {
     studentEnrollments.forEach(e -> {
-                if (e.getCourseID().equals(id)) {
+                if (e.getCourseID().equalsIgnoreCase(id)) {
                     System.out.println(e);
                 }
             });
@@ -150,12 +149,18 @@ public class StudentEnrollmentDatabase implements StudentEnrolmentManager {
     //////////////////////////////////////////////////////////////////////////////////
     public void getCourseOffered(String semester) {
         studentEnrollments.forEach(e -> {
-            if (e.getSemester().equals(semester)) {
-                System.out.println(e);
+            if (e.getSemester().equalsIgnoreCase(semester)) {
+                System.out.println(e.getCourseID() + " | " + e.getCourseName() + " | " + e.getNumberOfCredits() + " | " + e.getSemester());
             }
         });
     }
 
+    //////////////////////////////////////////////////////////////////////////////////
+    public void exportFile(String file) throws IOException {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+
+        }
+    }
 
 
 }

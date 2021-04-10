@@ -108,6 +108,8 @@ public class StudentEnrollment {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println("*****************************");
+        System.out.println("The enrollment has been added!");
         System.out.println("Press \"Enter\" to exit");
         sc.nextLine();
     }
@@ -284,7 +286,7 @@ public class StudentEnrollment {
                             if (newCourse.equals("0")) {
                                 return;
                             }
-                            studentEnrollmentDatabase.delete("update", updateStudent);
+                            studentEnrollmentDatabase.delete(updateStudent);
                             try {
                                 studentEnrollmentDatabase.save();
                             } catch (IOException e) {
@@ -351,9 +353,9 @@ public class StudentEnrollment {
                     System.out.println("*****************************");
                     System.out.println("Please choose what you want to print");
                     System.out.println("1. One enrollment of one student");
-                    System.out.println("1. One student's enrollment list");
-                    System.out.println("2. One course's enrollment list");
-                    System.out.println("3. All courses in one semester");
+                    System.out.println("2. One student's enrollment list");
+                    System.out.println("3. One course's enrollment list");
+                    System.out.println("4. All courses in one semester");
                     System.out.println("5. Return");
                     System.out.println("*****************************");
                     System.out.print("Please choose a command to execute: ");
@@ -373,7 +375,17 @@ public class StudentEnrollment {
                         if (semesterInput.equals("0")) {
                             return;
                         }
-                        studentEnrollmentDatabase.getOne(studentId,courseInput,semesterInput);
+                        sc.nextLine();
+                        StudentEnrollment student =studentEnrollmentDatabase.getOne(studentId,courseInput,semesterInput);
+                        if (student != null) {
+                            System.out.println(student);
+                            System.out.println("Press \"Enter\" to return");
+                        } else {
+                            System.err.println("There is no enrollment matches your input!");
+                            System.err.println("Press \"Enter\" to return");
+                        }
+                        sc.nextLine();
+                        choice2 = 0;
                     }
 
                     if (choice2 == 2) {
@@ -395,6 +407,9 @@ public class StudentEnrollment {
                         System.out.print("Please enter the course ID: ");
                         String courseIdInput = sc.nextLine();
                         studentEnrollmentDatabase.getCourseEnrollment(courseIdInput);
+                        System.out.println("*****************************");
+                        System.out.println("Press \"Enter\" to return");
+                        sc.nextLine();
                         choice2 = 0;
 
                     }
@@ -405,6 +420,9 @@ public class StudentEnrollment {
                         System.out.print("Please enter the semester: ");
                         String semesterInput = sc.nextLine();
                         studentEnrollmentDatabase.getCourseOffered(semesterInput);
+                        System.out.println("*****************************");
+                        System.out.println("Press \"Enter\" to return");
+                        sc.nextLine();
                         choice2 = 0;
                     }
                     choice = 0;
@@ -420,7 +438,61 @@ public class StudentEnrollment {
     }
     //////////////////////////////////////////////////////////////////////////////////
     public static void deleteEnrollment() {
+        Validator.clearscr();
+        System.out.println("*****************************");
+        System.out.println("DELETE AN ENROLLMENT");
 
+        String studentId = validator.setSid();
+        if (studentId.equals("0")) {
+            return;
+        }
+        String courseInput = validator.setCid();
+        if (courseInput.equals("0")) {
+            return;
+        }
+        String semesterInput = validator.setSem();
+        if (semesterInput.equals("0")) {
+            return;
+        }
+        try {
+            studentEnrollmentDatabase.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        StudentEnrollment deleteStudent =studentEnrollmentDatabase.getOne(studentId,courseInput,semesterInput);
+        if (deleteStudent != null) {
+            System.out.println("*****************************");
+            System.out.println("Enrolment Information");
+            System.out.println(deleteStudent);
+            System.out.println("Do you want to delete this enrollment? Y/N");
+            String choice = sc.nextLine();
+
+            while ((!choice.equalsIgnoreCase("y")) && (!choice.equalsIgnoreCase(("n")))) {
+                System.out.print("Please enter in the correct format: ");
+                choice = sc.nextLine();
+            }
+            if (choice.equalsIgnoreCase("y")) {
+                studentEnrollmentDatabase.delete(deleteStudent);
+                try {
+                    studentEnrollmentDatabase.save();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("The enrollment has been removed!");
+                System.err.println("Press \"Enter\" to return");
+                sc.nextLine();
+                return;
+            }
+            if (choice.equalsIgnoreCase("n")) {
+                return;
+            }
+
+        } else {
+            System.err.println("There is no enrollment matches your input!");
+            System.err.println("Press \"Enter\" to return");
+        }
+        sc.nextLine();
     }
 
     //////////////////////////////////////////////////////////////////////////////////

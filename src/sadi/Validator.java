@@ -107,7 +107,7 @@ public class Validator {
         try {
             System.out.print("choose a command to execute: ");
             firstChoice = sc.nextInt();
-            while (firstChoice != 1 && firstChoice != 2 && firstChoice != 3 && firstChoice != 4) {
+            while (firstChoice != 1 && firstChoice != 2 && firstChoice != 3 && firstChoice != 4 && firstChoice != 5) {
                 System.out.println("UNKNOWN INPUT!");
                 System.out.print("Please enter the correct option number: ");
                 firstChoice = sc.nextInt();
