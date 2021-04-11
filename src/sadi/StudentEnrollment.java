@@ -17,6 +17,7 @@ public class StudentEnrollment {
     private final int numberOfCredits;
     static Scanner sc = new Scanner(System.in);
     static Validator validator = new Validator();
+
     //////////////////////////////////////////////////////////////////////////////////
     public StudentEnrollment(String studentID, String studentName, String birthdate, String courseID, String courseName, int numberOfCredits, String semester) {
         this.studentID = studentID;
@@ -40,13 +41,21 @@ public class StudentEnrollment {
         return semester;
     }
 
-    public String getStudentName() { return studentName; }
+    public String getStudentName() {
+        return studentName;
+    }
 
-    public String getCourseName() { return courseName; }
+    public String getCourseName() {
+        return courseName;
+    }
 
-    public String getBirthdate() { return birthdate; }
+    public String getBirthdate() {
+        return birthdate;
+    }
 
-    public int getNumberOfCredits() { return numberOfCredits; }
+    public int getNumberOfCredits() {
+        return numberOfCredits;
+    }
 
     public void setStudentID(String studentID) {
         this.studentID = studentID;
@@ -114,13 +123,12 @@ public class StudentEnrollment {
         System.out.println("Press \"Enter\" to exit");
         sc.nextLine();
     }
+
     //////////////////////////////////////////////////////////////////////////////////
     public static void updateEnrollment() {
         int choice1;
         String choice2;
         int choice3;
-        String updateSID;
-        String updateCID;
         String newUpdate;
 
         do {
@@ -136,22 +144,30 @@ public class StudentEnrollment {
                 Validator.clearscr();
                 System.out.println("*****************************");
                 System.out.println("UPDATE ENROLLMENT DETAIL");
-                System.out.print("Please enter the student ID that you want to update: ");
-                updateSID = sc.nextLine();
-                System.out.print("Please enter the course ID that you want to update: ");
-                updateCID = sc.nextLine();
+                String updateSid = validator.setSid2();
+                if (updateSid.equals("0")) {
+                    return;
+                }
+                String updateCid = validator.setCid();
+                if (updateCid.equals("0")) {
+                    return;
+                }
                 try {
                     studentEnrollmentDatabase.load();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 System.out.println("*****************************");
-                StudentEnrollment updateStudent = studentEnrollmentDatabase.detailEnrollment("student", updateSID, updateCID);
+                StudentEnrollment updateStudent = studentEnrollmentDatabase.detailEnrollment("student", updateSid, updateCid);
                 if (updateStudent != null) {
                     System.out.println("Enrolment Information");
                     System.out.println(updateStudent);
                     System.out.println("Continue to update? Y/N");
                     choice2 = sc.nextLine();
+                    while ((!choice2.equalsIgnoreCase("y")) && (!choice2.equalsIgnoreCase(("n")))) {
+                        System.out.print("Please enter in the correct format: ");
+                        choice2 = sc.nextLine();
+                    }
                     if (choice2.equalsIgnoreCase("Y")) {
                         do {
                             Validator.clearscr();
@@ -171,7 +187,10 @@ public class StudentEnrollment {
                                 System.out.println("*****************************");
                                 System.out.println("Student ID update");
                                 System.out.print("Please enter a new student ID: ");
-                                newUpdate = sc.nextLine();
+                                newUpdate = validator.setSid();
+                                if (newUpdate.equals("0")) {
+                                    return;
+                                }
                                 studentEnrollmentDatabase.update("sid", updateStudent, newUpdate);
                                 try {
                                     studentEnrollmentDatabase.save();
@@ -187,7 +206,10 @@ public class StudentEnrollment {
                                 System.out.println("*****************************");
                                 System.out.println("Course ID update");
                                 System.out.print("Please enter a new course ID: ");
-                                newUpdate = sc.nextLine();
+                                newUpdate = validator.setCid();
+                                if (newUpdate.equals("0")) {
+                                    return;
+                                }
                                 studentEnrollmentDatabase.update("cid", updateStudent, newUpdate);
                                 try {
                                     studentEnrollmentDatabase.save();
@@ -203,7 +225,10 @@ public class StudentEnrollment {
                                 System.out.println("*****************************");
                                 System.out.println("Semester update");
                                 System.out.print("Please enter a new semester: ");
-                                newUpdate = sc.nextLine();
+                                newUpdate = validator.setSem();
+                                if (newUpdate.equals("0")) {
+                                    return;
+                                }
                                 studentEnrollmentDatabase.update("sem", updateStudent, newUpdate);
                                 try {
                                     studentEnrollmentDatabase.save();
@@ -252,7 +277,10 @@ public class StudentEnrollment {
                     System.out.println("*****************************");
                     System.out.println("Continue to update? Y/N");
                     choice2 = sc.nextLine();
-
+                    while ((!choice2.equalsIgnoreCase("y")) && (!choice2.equalsIgnoreCase(("n")))) {
+                        System.out.print("Please enter in the correct format: ");
+                        choice2 = sc.nextLine();
+                    }
                     if (choice2.equalsIgnoreCase("Y")) {
                         Validator.clearscr();
                         System.out.println("Select your action");
@@ -311,10 +339,9 @@ public class StudentEnrollment {
                 }
                 choice1 = 0;
             }
-
-
         } while (choice1 != 3);
     }
+
     //////////////////////////////////////////////////////////////////////////////////
     public static void printEnrollment() {
         int choice;
@@ -378,7 +405,7 @@ public class StudentEnrollment {
                             return;
                         }
                         sc.nextLine();
-                        StudentEnrollment student =studentEnrollmentDatabase.getOne(studentId,courseInput,semesterInput);
+                        StudentEnrollment student = studentEnrollmentDatabase.getOne(studentId, courseInput, semesterInput);
                         if (student != null) {
                             System.out.println(student);
                             System.out.println("Press \"Enter\" to return");
@@ -409,7 +436,6 @@ public class StudentEnrollment {
                         System.out.print("Please enter the course ID: ");
                         String courseIdInput = sc.nextLine();
                         studentEnrollmentDatabase.getCourseEnrollment(courseIdInput);
-
                         sc.nextLine();
                         choice2 = 0;
 
@@ -435,6 +461,7 @@ public class StudentEnrollment {
         sc.nextLine();
 
     }
+
     //////////////////////////////////////////////////////////////////////////////////
     public static void deleteEnrollment() {
         Validator.clearscr();
@@ -459,7 +486,7 @@ public class StudentEnrollment {
             e.printStackTrace();
         }
 
-        StudentEnrollment deleteStudent =studentEnrollmentDatabase.getOne(studentId,courseInput,semesterInput);
+        StudentEnrollment deleteStudent = studentEnrollmentDatabase.getOne(studentId, courseInput, semesterInput);
         if (deleteStudent != null) {
             System.out.println("*****************************");
             System.out.println("Enrolment Information");
@@ -497,24 +524,6 @@ public class StudentEnrollment {
     //////////////////////////////////////////////////////////////////////////////////
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     @Override
     public String toString() {
         return
@@ -528,7 +537,6 @@ public class StudentEnrollment {
 
                 ;
     }
-
 
 
 }

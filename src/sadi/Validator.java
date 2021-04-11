@@ -123,6 +123,7 @@ public class Validator {
         return firstChoice;
     }
 
+    //////////////////////////////////////////////////////////////////////////////////
     public String setSid2() {
         sc.nextLine();
         System.out.print("Please enter the student ID: ");
@@ -141,6 +142,7 @@ public class Validator {
         return sid;
     }
 
+    //////////////////////////////////////////////////////////////////////////////////
     public String fileValidate() {
         String fileName = null;
         String choice2;
@@ -162,6 +164,10 @@ public class Validator {
         return fileName;
     }
 
+
+
+
+    //////////////////////////////////////////////////////////////////////////////////
     public static void clearscr(){
             // clear the screen
             for(int i = 0; i < 80*300; i++) // Default Height of cmd is 300 and Default width is 80
