@@ -23,7 +23,7 @@ public class Student {
         students.add(new Student("s3825455", "Nguyen Hoang Thien An", "10/10/2001"));
         students.add(new Student("s3825456", "Nguyen Dang Lam Phuong", "04/12/2001"));
         students.add(new Student("s3825457", "Nguyen Hoang Nam", "10/05/2001"));
-        students.add(new Student("s3825458", "Pham Quang Man", "06/09/2001"));
+        students.add(new Student("s3825458", "Pham Quang Man", "07/09/2001"));
         students.add(new Student("s3825459", "Nguyen Van Binh", "03/04/2001"));
         students.add(new Student("s1234567", "Nguyen Bao Ngoc", "01/07/2001"));
         students.add(new Student("s7654321", "Bui Sy Nghi", "11/02/2001"));

@@ -72,7 +72,7 @@ public class StudentEnrollmentDatabase implements StudentEnrolmentManager {
     @Override
     public StudentEnrollment getOne(String studentId, String courseId, String semester) {
     for (StudentEnrollment studentEnrollment : studentEnrollments) {
-        if (studentEnrollment.getStudentID().equalsIgnoreCase(studentId) && studentEnrollment.getCourseID().equalsIgnoreCase(courseId) && studentEnrollment.getSemester().equalsIgnoreCase(semester)) {
+        if ((studentEnrollment.getCourseID().equalsIgnoreCase(courseId)) && (studentEnrollment.getSemester().equalsIgnoreCase(semester)) && (studentEnrollment.getStudentID().replaceAll("\0", "").equalsIgnoreCase(studentId)) ) {
             return studentEnrollment;
         }
     }
@@ -130,38 +130,125 @@ public class StudentEnrollmentDatabase implements StudentEnrolmentManager {
 
     //////////////////////////////////////////////////////////////////////////////////
     public void getStudentEnrollment(String id) {
+        ArrayList<StudentEnrollment> enrollmentDetails = new ArrayList<>();
         studentEnrollments.forEach(e -> {
-            if (e.getStudentID().equals(id)) {
-                System.out.println(e);
+            if (e.getStudentID().equalsIgnoreCase(id)) {
+                System.out.println(e.getStudentID() + " | " + e.getStudentName() + " | " + e.getCourseID() + " | " + e.getCourseName() + " | " + e.getNumberOfCredits() + " | " + e.getSemester());
+                enrollmentDetails.add(e);
             }
         });
+        System.out.println("Do you want to export to CSV file? Y/N");
+        String choice = sc.nextLine();
+        while ((!choice.equalsIgnoreCase("y")) && (!choice.equalsIgnoreCase(("n")))) {
+            System.out.print("Please enter in the correct format: ");
+            choice = sc.nextLine();
+        }
+        if (choice.equalsIgnoreCase("y")) {
+            try {
+                BufferedWriter bw = new BufferedWriter(new FileWriter("Student enrollment.csv"));
+                for (StudentEnrollment enrollmentDetail : enrollmentDetails) {
+                    String[] values = {enrollmentDetail.getStudentID(), enrollmentDetail.getStudentName(), enrollmentDetail.getCourseID(), enrollmentDetail.getCourseName(), String.valueOf(enrollmentDetail.getNumberOfCredits()), enrollmentDetail.getSemester()};
+                    String line = String.join(",", values);
+                    // // writes the line
+                    bw.append(line);
+                    // // writes "enter", so we more to the next line
+                    bw.append("\n");
+                }
+                bw.flush();
+                System.out.println("*****************************");
+                System.out.println("The CSV file has been exported");
+                System.out.println("Press \"Enter\" to return");
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        }
+        if (choice.equalsIgnoreCase("n")) {
+            System.out.println("*****************************");
+            System.out.println("Press \"Enter\" to return");
+        }
     }
 
     //////////////////////////////////////////////////////////////////////////////////
     public void getCourseEnrollment(String id) {
-    studentEnrollments.forEach(e -> {
-                if (e.getCourseID().equalsIgnoreCase(id)) {
-                    System.out.println(e);
+        ArrayList<StudentEnrollment> enrollmentDetails = new ArrayList<>();
+        studentEnrollments.forEach(e -> {
+            if (e.getCourseID().equalsIgnoreCase(id)) {
+                System.out.println(e);
+                enrollmentDetails.add(e);
+            }
+        });
+        System.out.println("Do you want to export to CSV file? Y/N");
+        String choice = sc.nextLine();
+        while ((!choice.equalsIgnoreCase("y")) && (!choice.equalsIgnoreCase(("n")))) {
+            System.out.print("Please enter in the correct format: ");
+            choice = sc.nextLine();
+        }
+        if (choice.equalsIgnoreCase("y")) {
+            try {
+                BufferedWriter bw = new BufferedWriter(new FileWriter("Course enrollment.csv"));
+                for (StudentEnrollment enrollmentDetail : enrollmentDetails) {
+                    String[] values = {enrollmentDetail.getStudentID(), enrollmentDetail.getStudentName(), enrollmentDetail.getBirthdate(), enrollmentDetail.getCourseID(), enrollmentDetail.getCourseName(), String.valueOf(enrollmentDetail.getNumberOfCredits()), enrollmentDetail.getSemester()};
+                    String line = String.join(",", values);
+                    // // writes the line
+                    bw.append(line);
+                    // // writes "enter", so we more to the next line
+                    bw.append("\n");
                 }
-            });
+                bw.flush();
+                System.out.println("*****************************");
+                System.out.println("The CSV file has been exported");
+                System.out.println("Press \"Enter\" to return");
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        }
+        if (choice.equalsIgnoreCase("n")) {
+            System.out.println("*****************************");
+            System.out.println("Press \"Enter\" to return");
+        }
+
     }
 
     //////////////////////////////////////////////////////////////////////////////////
     public void getCourseOffered(String semester) {
+        ArrayList<StudentEnrollment> courseDetails = new ArrayList<>();
         studentEnrollments.forEach(e -> {
             if (e.getSemester().equalsIgnoreCase(semester)) {
                 System.out.println(e.getCourseID() + " | " + e.getCourseName() + " | " + e.getNumberOfCredits() + " | " + e.getSemester());
+                courseDetails.add(e);
             }
         });
+        System.out.println("Do you want to export to CSV file? Y/N");
+        String choice = sc.nextLine();
+        while ((!choice.equalsIgnoreCase("y")) && (!choice.equalsIgnoreCase(("n")))) {
+            System.out.print("Please enter in the correct format: ");
+            choice = sc.nextLine();
+        }
+        if (choice.equalsIgnoreCase("y")) {
+            try {
+                BufferedWriter bw = new BufferedWriter(new FileWriter("Course offered.csv"));
+                for (StudentEnrollment enrollmentDetail : courseDetails) {
+                    String[] values = {enrollmentDetail.getCourseID(), enrollmentDetail.getCourseName(), String.valueOf(enrollmentDetail.getNumberOfCredits()), enrollmentDetail.getSemester()};
+                    String line = String.join(",", values);
+                    bw.append(line);
+                    bw.append("\n");
+                }
+                bw.flush();
+                System.out.println("*****************************");
+                System.out.println("The CSV file has been exported");
+                System.out.println("Press \"Enter\" to return");
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        }
+        if (choice.equalsIgnoreCase("n")) {
+            System.out.println("*****************************");
+            System.out.println("Press \"Enter\" to return");
+        }
+
     }
 
     //////////////////////////////////////////////////////////////////////////////////
-    public void exportFile(String file) throws IOException {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
-
-        }
-    }
-
 
 }
 

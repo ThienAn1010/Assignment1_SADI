@@ -20,7 +20,6 @@ public class Validator {
         course = new Course();
         List<Course> courses = course.getCourses();
         List<Student> students = student.getStudents();
-        //////////////////////////////////////////////////////////////////////////////////
         List<String> studentID = new ArrayList<>();
         List<String> courseID = new ArrayList<>();
         students.forEach( e -> {
@@ -51,13 +50,12 @@ public class Validator {
         return false;
     }
 
+    //////////////////////////////////////////////////////////////////////////////////
     public String setSid() {
         System.out.print("Please enter the student ID: ");
         String sid = sc.nextLine();
-        sid = sid.trim().toLowerCase();
-        if (sid.equals("0")) {
-            return sid;
-        }
+        sid = sid.trim();
+
         while(!validate("sid", sid) ) {
             System.out.print("Please enter the correct student ID: ");
             sid = sc.nextLine();
@@ -67,6 +65,8 @@ public class Validator {
         }
         return sid;
     }
+
+    //////////////////////////////////////////////////////////////////////////////////
 
     public String setCid() {
         System.out.print("Please enter the course ID: ");
@@ -85,6 +85,7 @@ public class Validator {
         return cid;
     }
 
+    //////////////////////////////////////////////////////////////////////////////////
     public String setSem() {
         System.out.print("Please enter the semester: ");
         String sem = sc.nextLine();
@@ -101,7 +102,8 @@ public class Validator {
         }
         return sem;
     }
-    
+
+    //////////////////////////////////////////////////////////////////////////////////
     public int choiceValidator() {
         int firstChoice =0;
         try {
@@ -159,16 +161,6 @@ public class Validator {
         }
         return fileName;
     }
-
-
-
-
-
-
-
-
-
-
 
     public static void clearscr(){
             // clear the screen

@@ -61,6 +61,7 @@ public class StudentEnrollment {
     }
 
     //////////////////////////////////////////////////////////////////////////////////
+    /* ADD ENROLLMENT METHOD */
     public static void enrollStudent() {
         Student student = new Student();
         Course course = new Course();
@@ -367,6 +368,7 @@ public class StudentEnrollment {
                         if (studentId.equals("0")) {
                             return;
                         }
+
                         String courseInput = validator.setCid();
                         if (courseInput.equals("0")) {
                             return;
@@ -392,11 +394,11 @@ public class StudentEnrollment {
                         Validator.clearscr();
                         sc.nextLine();
                         System.out.println("*****************************");
-                        System.out.print("Please enter the student ID: ");
-                        String studentIdInput = sc.nextLine();
-                        studentEnrollmentDatabase.getStudentEnrollment(studentIdInput);
-                        System.out.println("*****************************");
-                        System.out.println("Press \"Enter\" to return");
+                        String studentId = validator.setSid();
+                        if (studentId.equals("0")) {
+                            return;
+                        }
+                        studentEnrollmentDatabase.getStudentEnrollment(studentId);
                         sc.nextLine();
                         choice2 = 0;
                     }
@@ -407,8 +409,7 @@ public class StudentEnrollment {
                         System.out.print("Please enter the course ID: ");
                         String courseIdInput = sc.nextLine();
                         studentEnrollmentDatabase.getCourseEnrollment(courseIdInput);
-                        System.out.println("*****************************");
-                        System.out.println("Press \"Enter\" to return");
+
                         sc.nextLine();
                         choice2 = 0;
 
@@ -420,8 +421,6 @@ public class StudentEnrollment {
                         System.out.print("Please enter the semester: ");
                         String semesterInput = sc.nextLine();
                         studentEnrollmentDatabase.getCourseOffered(semesterInput);
-                        System.out.println("*****************************");
-                        System.out.println("Press \"Enter\" to return");
                         sc.nextLine();
                         choice2 = 0;
                     }
