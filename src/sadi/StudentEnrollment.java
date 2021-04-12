@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class StudentEnrollment {
-    static StudentEnrollmentDatabase studentEnrollmentDatabase = new StudentEnrollmentDatabase("default.csv");
+    static StudentEnrollmentDatabase studentEnrollmentDatabase = new StudentEnrollmentDatabase(Main.fileName);
     private static Student studentInfo;
     private static Course courseInfo;
     private String studentID;
@@ -138,12 +138,17 @@ public class StudentEnrollment {
             System.out.println("1. Update enrollment detail");
             System.out.println("2. Add/Delete courses for student");
             System.out.println("3. Return");
-            choice1 = validator.choiceValidator();
+            System.out.println("*****************************");
+            choice1 = validator.choiceValidator(3);
+            if (choice1 == 0) {
+                return;
+            }
 
             if (choice1 == 1) {
                 Validator.clearscr();
                 System.out.println("*****************************");
                 System.out.println("UPDATE ENROLLMENT DETAIL");
+                System.out.println("Press \"0\" to return");
                 String updateSid = validator.setSid2();
                 if (updateSid.equals("0")) {
                     return;
@@ -205,6 +210,7 @@ public class StudentEnrollment {
                                 sc.nextLine();
                                 System.out.println("*****************************");
                                 System.out.println("Course ID update");
+                                System.out.println("Press \"0\" to return");
                                 System.out.print("Please enter a new course ID: ");
                                 newUpdate = validator.setCid();
                                 if (newUpdate.equals("0")) {
@@ -255,6 +261,7 @@ public class StudentEnrollment {
                 Validator.clearscr();
                 System.out.println("*****************************");
                 System.out.println("UPDATE STUDENT'S COURSES");
+                System.out.println("Press \"0\" to return");
                 String newStudentID = validator.setSid2();
                 if (newStudentID.equals("0")) {
                     return;
@@ -292,11 +299,21 @@ public class StudentEnrollment {
                         if (choice4 == 1) {
                             System.out.println("*****************************");
                             System.out.println("ADD COURSE");
+                            System.out.println("Press \"0\" to return");
                             String newCourse = validator.setCid();
                             if (newCourse.equals("0")) {
                                 return;
                             }
-                            studentEnrollmentDatabase.update("cid", updateStudent, newCourse);
+                            Course course = new Course();
+                            List<Course> courses = course.getCourses();
+                            courses.forEach(e -> {
+                                if (e.getId().equalsIgnoreCase(newCourse)) {
+                                    courseInfo = e;
+                                }
+                            });
+                            String courseName = courseInfo.getName();
+                            int coursePoint = courseInfo.getNumberOfCredits();
+                            studentEnrollmentDatabase.add(updateStudent.getStudentID(), updateStudent.getStudentName(), updateStudent.getBirthdate(), newCourse, courseName, coursePoint, semInput);
                             try {
                                 studentEnrollmentDatabase.save();
                             } catch (IOException e) {
@@ -311,6 +328,7 @@ public class StudentEnrollment {
                         if (choice4 == 2) {
                             System.out.println("*****************************");
                             System.out.println("DELETE COURSE");
+                            System.out.println("Press \"0\" to return");
                             String newCourse = validator.setCid();
                             if (newCourse.equals("0")) {
                                 return;
@@ -391,6 +409,8 @@ public class StudentEnrollment {
 
                     if (choice2 == 1) {
                         Validator.clearscr();
+                        System.out.println("*****************************");
+                        System.out.println("Press \"0\" to return");
                         String studentId = validator.setSid();
                         if (studentId.equals("0")) {
                             return;
@@ -421,6 +441,7 @@ public class StudentEnrollment {
                         Validator.clearscr();
                         sc.nextLine();
                         System.out.println("*****************************");
+                        System.out.println("Press \"0\" to return");
                         String studentId = validator.setSid();
                         if (studentId.equals("0")) {
                             return;
@@ -433,8 +454,11 @@ public class StudentEnrollment {
                         Validator.clearscr();
                         sc.nextLine();
                         System.out.println("*****************************");
-                        System.out.print("Please enter the course ID: ");
-                        String courseIdInput = sc.nextLine();
+                        System.out.println("Press \"0\" to return");
+                        String courseIdInput = validator.setCid();
+                        if (courseIdInput.equals("0")) {
+                            return;
+                        }
                         studentEnrollmentDatabase.getCourseEnrollment(courseIdInput);
                         sc.nextLine();
                         choice2 = 0;
@@ -444,8 +468,11 @@ public class StudentEnrollment {
                         Validator.clearscr();
                         sc.nextLine();
                         System.out.println("*****************************");
-                        System.out.print("Please enter the semester: ");
-                        String semesterInput = sc.nextLine();
+                        System.out.println("Press \"0\" to return");
+                        String semesterInput = validator.setSem();
+                        if (semesterInput.equals("0")) {
+                            return;
+                        }
                         studentEnrollmentDatabase.getCourseOffered(semesterInput);
                         sc.nextLine();
                         choice2 = 0;
@@ -467,6 +494,7 @@ public class StudentEnrollment {
         Validator.clearscr();
         System.out.println("*****************************");
         System.out.println("DELETE AN ENROLLMENT");
+        System.out.println("Press \"0\" to return");
 
         String studentId = validator.setSid();
         if (studentId.equals("0")) {

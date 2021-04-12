@@ -1,4 +1,5 @@
-﻿s3825455,Nguyen Hoang Thien An,10/10/2001,COSC1237,SADI,12,2021A
+﻿Student ID,Student Name,Birthdate,Course ID,Course Name,0,Semester
+s3825455,Nguyen Hoang Thien An,10/10/2001,COSC1237,SADI,12,2021A
 s3825455,Nguyen Hoang Thien An,10/10/2001,COSC2222,Cloud Computing,12,2021B
 s3825456,Nguyen Dang Lam Phuong,4/12/2001,COSC1234,Intro to IT,12,2021A
 s3825456,Nguyen Dang Lam Phuong,4/12/2001,COSC1237,SADI,12,2021A
@@ -10,3 +11,4 @@ s3825459,Nguyen Van Binh,3/4/2001,COSC1234,Intro to IT,12,2021A
 s3825459,Nguyen Van Binh,3/4/2001,COSC1236,UCD,12,2021B
 s1234567,Nguyen Bao Ngoc,1/7/2001,COSC1111,Web Programming,12,2021A
 s1234567,Nguyen Bao Ngoc,1/7/2001,COSC2222,Cloud Computing,12,2021A
+s3825455,Nguyen Hoang Thien An,10/10/2001,COSC3333,Machine Learning,12,2019C

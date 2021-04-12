@@ -54,11 +54,15 @@ public class Validator {
     public String setSid() {
         System.out.print("Please enter the student ID: ");
         String sid = sc.nextLine();
-        sid = sid.trim();
+        sid = sid.trim().toLowerCase();
+        if (sid.equals("0")) {
+            return sid;
+        }
 
         while(!validate("sid", sid) ) {
             System.out.print("Please enter the correct student ID: ");
             sid = sc.nextLine();
+            sid = sid.trim().toLowerCase();
             if (sid.equals("0")) {
                 return sid;
             }
@@ -78,6 +82,7 @@ public class Validator {
         while(!validate("cid", cid) ) {
             System.out.print("Please enter the correct course ID: ");
             cid = sc.nextLine();
+            cid = cid.trim().toUpperCase();
             if (cid.equals("0")) {
                 return cid;
             }
@@ -96,6 +101,7 @@ public class Validator {
         while(!validate("sem", sem) ) {
             System.out.print("Please enter the correct semester format: ");
             sem = sc.nextLine();
+            sem = sem.trim().toUpperCase();
             if (sem.equals("0")) {
                 return sem;
             }
@@ -104,12 +110,12 @@ public class Validator {
     }
 
     //////////////////////////////////////////////////////////////////////////////////
-    public int choiceValidator() {
+    public int choiceValidator(int limit) {
         int firstChoice =0;
         try {
             System.out.print("choose a command to execute: ");
             firstChoice = sc.nextInt();
-            while (firstChoice != 1 && firstChoice != 2 && firstChoice != 3 && firstChoice != 4 && firstChoice != 5) {
+            while (firstChoice < 0 || firstChoice > limit) {
                 System.out.println("UNKNOWN INPUT!");
                 System.out.print("Please enter the correct option number: ");
                 firstChoice = sc.nextInt();
@@ -135,6 +141,7 @@ public class Validator {
         while(!validate("sid", sid) ) {
             System.out.print("Please enter the correct student ID: ");
             sid = sc.nextLine();
+            sid = sid.trim().toLowerCase();
             if (sid.equals("0")) {
                 return sid;
             }

@@ -5,12 +5,12 @@ import java.util.Scanner;
 
 
     public class Main {
+        static String fileName = null;
         public static void main(String[] args) throws IOException {
             Scanner sc = new Scanner(System.in);
             Validator validator = new Validator();
             int choice;
-//            String fileName = validator.fileValidate();
-//            StudentEnrollmentDatabase studentEnrollmentDatabase = new StudentEnrollmentDatabase(fileName);
+            fileName = validator.fileValidate();
 
             do {
                 Validator.clearscr();
@@ -22,7 +22,7 @@ import java.util.Scanner;
                 System.out.println("4. Delete");
                 System.out.println("5. Exit");
                 System.out.println("*****************************");
-                choice = validator.choiceValidator();
+                choice = validator.choiceValidator(5);
                     if (choice == 1) {
                         StudentEnrollment.enrollStudent();
                         choice = 0;
