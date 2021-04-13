@@ -6,7 +6,7 @@ import java.util.Scanner;
 
     public class Main {
         static String fileName = null;
-        public static void main(String[] args) throws IOException {
+        public static void main(String[] args) {
             Scanner sc = new Scanner(System.in);
             Validator validator = new Validator();
             int choice;

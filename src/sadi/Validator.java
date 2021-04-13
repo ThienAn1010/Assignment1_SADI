@@ -20,15 +20,15 @@ public class Validator {
         course = new Course();
         List<Course> courses = course.getCourses();
         List<Student> students = student.getStudents();
-        List<String> studentID = new ArrayList<>();
-        List<String> courseID = new ArrayList<>();
+        List<String> studentId = new ArrayList<>();
+        List<String> courseId = new ArrayList<>();
         students.forEach( e -> {
             String sid = e.getId();
-            studentID.add(sid);
+            studentId.add(sid);
         } );
         courses.forEach( e -> {
            String cid = e.getId();
-           courseID.add(cid);
+           courseId.add(cid);
         });
 
         Pattern pattern1 = Pattern.compile("^s([0-9]{7})",Pattern.CASE_INSENSITIVE);
@@ -37,11 +37,11 @@ public class Validator {
         int inputLength = input.length();
         if (type.equals("sid")) {
             Matcher matcher1 = pattern1.matcher(input);
-            return ((inputLength == 8 ) && (matcher1.matches()) && (studentID.contains(input)));
+            return ((inputLength == 8 ) && (matcher1.matches()) && (studentId.contains(input)));
             }
         if (type.equals("cid")) {
             Matcher matcher2 = pattern2.matcher(input);
-            return ((courseID.contains(input)) && (inputLength == 8) && (matcher2.matches()));
+            return ((courseId.contains(input)) && (inputLength == 8) && (matcher2.matches()));
         }
         if (type.equals("sem")) {
             Matcher matcher3 = pattern3.matcher(input);
@@ -54,7 +54,7 @@ public class Validator {
     public String setSid() {
         System.out.print("Please enter the student ID: ");
         String sid = sc.nextLine();
-        sid = sid.trim().toLowerCase();
+        sid = sid.trim().toLowerCase(); //remove extra space and make all chars lowercase
         if (sid.equals("0")) {
             return sid;
         }
@@ -170,10 +170,6 @@ public class Validator {
         }
         return fileName;
     }
-
-
-
-
     //////////////////////////////////////////////////////////////////////////////////
     public static void clearscr(){
             // clear the screen

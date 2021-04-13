@@ -21,8 +21,8 @@ public class StudentEnrollmentDatabase implements StudentEnrolmentManager {
 
     //////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void add(String studentID, String studentName, String birthDate, String courseID, String courseName, int creditPoint, String semester) {
-        StudentEnrollment newSE = new StudentEnrollment(studentID, studentName, birthDate, courseID, courseName, creditPoint, semester);
+    public void add(String studentId, String studentName, String birthDate, String courseId, String courseName, int creditPoint, String semester) {
+        StudentEnrollment newSE = new StudentEnrollment(studentId, studentName, birthDate, courseId, courseName, creditPoint, semester);
         studentEnrollments.add(newSE);
     }
 
@@ -33,7 +33,7 @@ public class StudentEnrollmentDatabase implements StudentEnrolmentManager {
             // iterates over the leads
             for (StudentEnrollment se : getStudentEnrollments()) {
                 // // creates an array of the lead's values
-                String[] values = {se.getStudentID(), se.getStudentName(), se.getBirthdate(), se.getCourseID(), se.getCourseName(), String.valueOf(se.getNumberOfCredits()), se.getSemester()};
+                String[] values = {se.getStudentId(), se.getStudentName(), se.getBirthdate(), se.getCourseId(), se.getCourseName(), String.valueOf(se.getNumberOfCredits()), se.getSemester()};
                 // // creates a new line
                 String line = String.join(",", values);
                 // // writes the line
@@ -47,18 +47,10 @@ public class StudentEnrollmentDatabase implements StudentEnrolmentManager {
 
     //////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void update(String type, StudentEnrollment updateStudent, String newUpdate) {
-        if (type.equals("sid")) {
-            updateStudent.setStudentID(newUpdate);
-            System.out.println(updateStudent);
-        }
-        if (type.equals("cid")) {
-            updateStudent.setCourseID(newUpdate);
-            System.out.println(updateStudent);
-        }
-        if (type.equals("sem")) {
-            updateStudent.setSemester(newUpdate);
-            System.out.println(updateStudent);
+    public void update(String type, StudentEnrollment updateStudent, String newId, String newName, int newInfo, String semInput) {
+        if (type.equalsIgnoreCase("cid")) {
+            add(updateStudent.getStudentId(), updateStudent.getStudentName(), updateStudent.getBirthdate(), newId, newName, newInfo, semInput);
+
         }
     }
 
@@ -72,7 +64,7 @@ public class StudentEnrollmentDatabase implements StudentEnrolmentManager {
     @Override
     public StudentEnrollment getOne(String studentId, String courseId, String semester) {
     for (StudentEnrollment studentEnrollment : studentEnrollments) {
-        if ((studentEnrollment.getCourseID().equalsIgnoreCase(courseId)) && (studentEnrollment.getSemester().equalsIgnoreCase(semester)) && (studentEnrollment.getStudentID().replaceAll("\0", "").equalsIgnoreCase(studentId)) ) {
+        if ((studentEnrollment.getCourseId().equalsIgnoreCase(courseId)) && (studentEnrollment.getSemester().equalsIgnoreCase(semester)) && (studentEnrollment.getStudentId().replaceAll("\0", "").equalsIgnoreCase(studentId)) ) {
             return studentEnrollment;
         }
     }
@@ -80,17 +72,17 @@ public class StudentEnrollmentDatabase implements StudentEnrolmentManager {
     }
 
     //////////////////////////////////////////////////////////////////////////////////
-    public StudentEnrollment detailEnrollment(String type, String studentID, String selectedID) {
+    public StudentEnrollment detailEnrollment(String type, String studentId, String selectedId) {
         if (type.equals("student")) {
             for (StudentEnrollment studentEnrollment : studentEnrollments) {
-                if ((studentEnrollment.getStudentID().equals(studentID)) && (studentEnrollment.getCourseID().equals(selectedID))) {
+                if ((studentEnrollment.getStudentId().equals(studentId)) && (studentEnrollment.getCourseId().equals(selectedId))) {
                     return studentEnrollment;
                 }
             }
         }
         if (type.equals("sem")) {
             for (StudentEnrollment studentEnrollment : studentEnrollments) {
-                if ((studentEnrollment.getStudentID().equalsIgnoreCase(studentID)) && (studentEnrollment.getSemester().equalsIgnoreCase(selectedID))) {
+                if ((studentEnrollment.getStudentId().equalsIgnoreCase(studentId)) && (studentEnrollment.getSemester().equalsIgnoreCase(selectedId))) {
                     return studentEnrollment;
                 }
             }
@@ -100,8 +92,10 @@ public class StudentEnrollmentDatabase implements StudentEnrolmentManager {
 
     //////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void getAll() {
-        studentEnrollments.forEach(System.out::println);
+    public List<StudentEnrollment> getAll() {
+        List<StudentEnrollment> getAllList = new ArrayList<>();
+        getAllList.addAll(studentEnrollments);
+        return getAllList;
     }
 
     //////////////////////////////////////////////////////////////////////////////////
@@ -115,15 +109,15 @@ public class StudentEnrollmentDatabase implements StudentEnrolmentManager {
             while ((enrollmentInfo = br.readLine()) != null) {
                 // splits the string line using semicolons
                 String[] values = enrollmentInfo.split(",");
-                String studentID = values[0];
+                String studentId = values[0];
                 String studentName = values[1];
                 String birthdate = values[2];
-                String courseID = values[3];
+                String courseId = values[3];
                 String courseName = values[4];
                 String creditPoint = values[5];
                 String semester = values[6];
                 // adds a new lead with those values
-                add(studentID, studentName, birthdate, courseID, courseName, Integer.parseInt(String.valueOf(creditPoint)), semester);
+                add(studentId, studentName, birthdate, courseId, courseName, Integer.parseInt(String.valueOf(creditPoint)), semester);
             }
         }
     }
@@ -132,8 +126,8 @@ public class StudentEnrollmentDatabase implements StudentEnrolmentManager {
     public void getStudentEnrollment(String id) {
         ArrayList<StudentEnrollment> enrollmentDetails = new ArrayList<>();
         studentEnrollments.forEach(e -> {
-            if (e.getStudentID().equalsIgnoreCase(id)) {
-                System.out.println(e.getStudentID() + " | " + e.getStudentName() + " | " + e.getCourseID() + " | " + e.getCourseName() + " | " + e.getNumberOfCredits() + " | " + e.getSemester());
+            if (e.getStudentId().equalsIgnoreCase(id)) {
+                System.out.println(e.getStudentId() + " | " + e.getStudentName() + " | " + e.getCourseId() + " | " + e.getCourseName() + " | " + e.getNumberOfCredits() + " | " + e.getSemester());
                 enrollmentDetails.add(e);
             }
         });
@@ -147,7 +141,7 @@ public class StudentEnrollmentDatabase implements StudentEnrolmentManager {
             try {
                 BufferedWriter bw = new BufferedWriter(new FileWriter("Student enrollment.csv"));
                 for (StudentEnrollment enrollmentDetail : enrollmentDetails) {
-                    String[] values = {enrollmentDetail.getStudentID(), enrollmentDetail.getStudentName(), enrollmentDetail.getCourseID(), enrollmentDetail.getCourseName(), String.valueOf(enrollmentDetail.getNumberOfCredits()), enrollmentDetail.getSemester()};
+                    String[] values = {enrollmentDetail.getStudentId(), enrollmentDetail.getStudentName(), enrollmentDetail.getCourseId(), enrollmentDetail.getCourseName(), String.valueOf(enrollmentDetail.getNumberOfCredits()), enrollmentDetail.getSemester()};
                     String line = String.join(",", values);
                     // // writes the line
                     bw.append(line);
@@ -172,7 +166,7 @@ public class StudentEnrollmentDatabase implements StudentEnrolmentManager {
     public void getCourseEnrollment(String id) {
         ArrayList<StudentEnrollment> enrollmentDetails = new ArrayList<>();
         studentEnrollments.forEach(e -> {
-            if (e.getCourseID().equalsIgnoreCase(id)) {
+            if (e.getCourseId().equalsIgnoreCase(id)) {
                 System.out.println(e);
                 enrollmentDetails.add(e);
             }
@@ -187,7 +181,7 @@ public class StudentEnrollmentDatabase implements StudentEnrolmentManager {
             try {
                 BufferedWriter bw = new BufferedWriter(new FileWriter("Course enrollment.csv"));
                 for (StudentEnrollment enrollmentDetail : enrollmentDetails) {
-                    String[] values = {enrollmentDetail.getStudentID(), enrollmentDetail.getStudentName(), enrollmentDetail.getBirthdate(), enrollmentDetail.getCourseID(), enrollmentDetail.getCourseName(), String.valueOf(enrollmentDetail.getNumberOfCredits()), enrollmentDetail.getSemester()};
+                    String[] values = {enrollmentDetail.getStudentId(), enrollmentDetail.getStudentName(), enrollmentDetail.getBirthdate(), enrollmentDetail.getCourseId(), enrollmentDetail.getCourseName(), String.valueOf(enrollmentDetail.getNumberOfCredits()), enrollmentDetail.getSemester()};
                     String line = String.join(",", values);
                     // // writes the line
                     bw.append(line);
@@ -214,7 +208,7 @@ public class StudentEnrollmentDatabase implements StudentEnrolmentManager {
         ArrayList<StudentEnrollment> courseDetails = new ArrayList<>();
         studentEnrollments.forEach(e -> {
             if (e.getSemester().equalsIgnoreCase(semester)) {
-                System.out.println(e.getCourseID() + " | " + e.getCourseName() + " | " + e.getNumberOfCredits() + " | " + e.getSemester());
+                System.out.println(e.getCourseId() + " | " + e.getCourseName() + " | " + e.getNumberOfCredits() + " | " + e.getSemester());
                 courseDetails.add(e);
             }
         });
@@ -228,7 +222,7 @@ public class StudentEnrollmentDatabase implements StudentEnrolmentManager {
             try {
                 BufferedWriter bw = new BufferedWriter(new FileWriter("Course offered.csv"));
                 for (StudentEnrollment enrollmentDetail : courseDetails) {
-                    String[] values = {enrollmentDetail.getCourseID(), enrollmentDetail.getCourseName(), String.valueOf(enrollmentDetail.getNumberOfCredits()), enrollmentDetail.getSemester()};
+                    String[] values = {enrollmentDetail.getCourseId(), enrollmentDetail.getCourseName(), String.valueOf(enrollmentDetail.getNumberOfCredits()), enrollmentDetail.getSemester()};
                     String line = String.join(",", values);
                     bw.append(line);
                     bw.append("\n");
@@ -249,7 +243,9 @@ public class StudentEnrollmentDatabase implements StudentEnrolmentManager {
     }
 
     //////////////////////////////////////////////////////////////////////////////////
-
+    public void clearCsv() {
+        studentEnrollments.clear();
+    }
 }
 
 
